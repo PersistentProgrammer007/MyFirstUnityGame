@@ -1,0 +1,115 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.XR;
+
+public class Birdscript : MonoBehaviour
+{
+
+    public Rigidbody2D myRigidBody;
+    public float flapStrength;
+    public LogicScript logic;
+    public bool isBirdAlive = true;
+    public List<AudioClip> soundEffects;
+
+    public PipeMiddleScript pms;
+    
+    //public Dictionary<string, AudioClip> sfxs; unity editor doesn't know how to serialize this, it only supports basic types and collections.
+
+    private AudioSource myAudioSource;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+        myAudioSource = GetComponent<AudioSource>();
+
+        myAudioSource.volume = 0.5f;
+        pms.Pipe += changeNPlaySound;
+
+        Debug.Log("clip " + myAudioSource.clip);
+
+        //Debug.Log("Current Scene Index: " + SceneManager.GetActiveScene().buildIndex);
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isBirdAlive)
+        {
+            myRigidBody.velocity = Vector2.up * flapStrength;
+
+            changeNPlaySound("jump");
+            
+        }
+
+        if ( myRigidBody.position.x <= -16 || myRigidBody.position.y <= -10 )
+        {
+            if(isBirdAlive)
+                changeNPlaySound("game_over");
+
+            logic.gameOver();
+            isBirdAlive = false;
+        }
+       
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (isBirdAlive)
+        {
+            changeNPlaySound("game_over");
+            logic.gameOver();
+        }
+
+        isBirdAlive = false;
+    }
+
+    private bool changeNPlaySound(string sfx_name)
+    {
+        if (soundEffects.Count != 3)
+        {
+            Debug.Log("Not all sound files are present!");
+            return false;
+        }
+
+        if (sfx_name == "coin")
+            myAudioSource.clip = soundEffects[0];
+
+        else if (sfx_name == "game_over")
+            myAudioSource.clip = soundEffects[1];
+
+        else if (sfx_name == "jump")
+            myAudioSource.clip = soundEffects[2];
+
+        myAudioSource.volume = 0.6f;
+        myAudioSource.Play();
+
+        return true;
+    }
+
+    /*
+     
+    Features to be added: 
+    look into the new input system                                                                         Have not looked into it
+    TextMeshPro                                                                                            Looked into it and used it
+
+    game over when the bird is off-the-screen,                                                             done
+    add audio / sound effects in the game,                                                                 done
+    particle system to add moving clouds in the game,
+    animation window to add flapping wings,                                                                done 
+    another screen for title-screen (clue: i will have to add the scene to the build settings window!),    done
+    PlayerPrefs to save a player's high score,                                                             done
+    
+    expand on flappy bird, adding some unique elements that weren't there in the original flappy bird!
+
+    Next: take other games and remake them like pong, offline dino game, 
+     
+     */
+
+}
