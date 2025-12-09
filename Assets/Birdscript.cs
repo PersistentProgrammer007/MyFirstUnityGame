@@ -15,11 +15,15 @@ public class Birdscript : MonoBehaviour
     public bool isBirdAlive = true;
     public List<AudioClip> soundEffects;
 
+    public GameObject bullet;
+    
+
     public PipeMiddleScript pms;
     
     //public Dictionary<string, AudioClip> sfxs; unity editor doesn't know how to serialize this, it only supports basic types and collections.
 
     private AudioSource myAudioSource;
+    public int bulletSpeed = 400;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +50,17 @@ public class Birdscript : MonoBehaviour
 
             changeNPlaySound("jump");
             
+        }
+
+        if (Input.GetKeyDown(KeyCode.F) && isBirdAlive)
+        {
+            // play firing sound: 
+            Debug.Log("hello, f was pressed!");
+
+            GameObject SpawnedBullet = Instantiate(bullet, new Vector3(0, transform.position.y ,0), transform.rotation);
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            rb.velocity = transform.right * bulletSpeed;
+
         }
 
         if ( myRigidBody.position.x <= -16 || myRigidBody.position.y <= -10 )
@@ -83,7 +98,7 @@ public class Birdscript : MonoBehaviour
 
         else if (sfx_name == "game_over")
             myAudioSource.clip = soundEffects[1];
-
+        
         else if (sfx_name == "jump")
             myAudioSource.clip = soundEffects[2];
 

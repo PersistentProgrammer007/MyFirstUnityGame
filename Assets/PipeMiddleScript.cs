@@ -36,7 +36,7 @@ public class PipeMiddleScript : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Entered the trigger!");
+        //Debug.Log("Entered the trigger!");
 
         GameObject overScreen = GameObject.FindWithTag("game_over_screen");
 
