@@ -23,7 +23,7 @@ public class Birdscript : MonoBehaviour
     //public Dictionary<string, AudioClip> sfxs; unity editor doesn't know how to serialize this, it only supports basic types and collections.
 
     private AudioSource myAudioSource;
-    public int bulletSpeed = 400;
+    public int bulletSpeed = 100;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +35,7 @@ public class Birdscript : MonoBehaviour
         myAudioSource.volume = 0.5f;
         pms.Pipe += changeNPlaySound;
 
-        Debug.Log("clip " + myAudioSource.clip);
+        //Debug.Log("clip " + myAudioSource.clip);
 
         //Debug.Log("Current Scene Index: " + SceneManager.GetActiveScene().buildIndex);
         
@@ -55,11 +55,15 @@ public class Birdscript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && isBirdAlive)
         {
             // play firing sound: 
-            Debug.Log("hello, f was pressed!");
+            //Debug.Log("f pressed");
 
-            GameObject SpawnedBullet = Instantiate(bullet, new Vector3(0, transform.position.y ,0), transform.rotation);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            GameObject SpawnedBullet = Instantiate(bullet, new Vector3(0 + 1, transform.position.y ,0), transform.rotation);
+            
+
+            Rigidbody2D rb = SpawnedBullet.GetComponent<Rigidbody2D>();
             rb.velocity = transform.right * bulletSpeed;
+
+            
 
         }
 
@@ -76,6 +80,8 @@ public class Birdscript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //Debug.Log("hello this is in birdscript");
+
         if (isBirdAlive)
         {
             changeNPlaySound("game_over");

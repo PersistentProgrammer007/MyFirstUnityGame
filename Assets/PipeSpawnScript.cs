@@ -14,7 +14,7 @@ public class PipeSpawnScript : MonoBehaviour
     private float timer = 0;
     private int spawned = 0;
 
-
+    //private RButton button;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +25,12 @@ public class PipeSpawnScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (spawned == 3)
+            spawnRate = 3f;
+        else
+        {
+            spawnRate = 2;
+        }
 
         if (timer < spawnRate)
         {
@@ -61,20 +67,25 @@ public class PipeSpawnScript : MonoBehaviour
             Transform topPipe = parent.transform.Find("Top Pipe");       //randomly, this is the pipe with the red button:
             Transform bottomPipe = parent.transform.Find("Bottom Pipe"); // so this pipe has to have a scale effect, it could be also vice-versa
 
-            Debug.Log("Hello child_name = " + topPipe.name + " world Y position = " + topPipe.position.y);
-            Debug.Log("Hello child_name = " + topPipe.name + " local Y position = " + topPipe.localPosition.y);
+            GameObject top_btn = topPipe.transform.Find("red button").gameObject;
+            top_btn.SetActive(true);
 
-            //topPipe.localPosition = new Vector3(0, upperPipe, 0);
-            topPipe.transform.Find("red button").gameObject.SetActive(true);
-            //topPipe.localScale = new Vector3()
+            
 
-            //bottomPipe.localPosition = new Vector3(0, lowerPipe, 0);
-            //bottomPipe.localScale = new Vector3(1 , 0 , 1);
+
+
+
+
+            // to look into types of positions and scales later: 
+
+            //Debug.Log("Hello child_name = " + topPipe.name + " world Y position = " + topPipe.position.y);
+            //Debug.Log("Hello child_name = " + topPipe.name + " local Y position = " + topPipe.localPosition.y);
 
             //Debug.Log("bottom pipe local scale: " + bottomPipe.localScale);
             //Debug.Log("bottom pipe lossy scale: " + bottomPipe.lossyScale);
 
-        } else
+        }
+        else
         {
             float lowerPoint = transform.position.y - heightOffset;     // y = -.13
             float highestPoint = transform.position.y + heightOffset;    // range we want: -5.49 ~ 4.77 so default heightoffset = 4.75!
@@ -85,4 +96,6 @@ public class PipeSpawnScript : MonoBehaviour
         
         
     }
+
+    
 }
