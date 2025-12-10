@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class RButton : MonoBehaviour
 {
+
+    public Animator UpAnimator;
+
+    
+
+    private string triggerName = "MoveUpTrigger";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +27,16 @@ public class RButton : MonoBehaviour
     {
         if (collision.gameObject.name == "Bullet(Clone)")
         {
-            Debug.Log("collided with bullet bro!");
+            //Debug.Log("collided with bullet bro!");
+
+            UpAnimator = GetComponentInParent<Animator>();
+
+            if(UpAnimator != null)
+            {
+                transform.parent.GetComponent<BoxCollider2D>().enabled = false;
+                //Debug.Log("trigger fired!");
+                UpAnimator.SetTrigger(triggerName);
+            }
         }
         
     }

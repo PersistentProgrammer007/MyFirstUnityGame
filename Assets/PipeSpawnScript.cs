@@ -93,9 +93,11 @@ public class PipeSpawnScript : MonoBehaviour
             GameObject parent = Instantiate(Pipe, new Vector3(transform.position.x, Random.Range(lowerPoint, highestPoint), 0), transform.rotation);
             spawned++;
         }
-        
-        
+
+        // to look into later: coroutines
+        // google important conversation link: https://www.google.com/search?sourceid=chrome&udm=50&aep=26&mtid=5C84afOkKo-_juMP9vygwAY&ved=0CAkQ2_wOahcKEwjwp7iTmbKRAxUAAAAAHQAAAAAQDQ&atvm=1&mstk=AUtExfAhGLoA234N1_QHrhkKFotsYVKqTooQXWQCLzEFx4-z5nfI_N_NQ-rCXYgbBQEvqJcPPH1Dg9fX_ZYT1_UGfDL8DwargxjMDXqusbwL5qW5DjMkPrCMugMHZUgDjjNi1XIUdd0WmildLNm8xuWjUvn8tMdkDUlYa2ARpJvTjyxLcfVfLb-xhWFRSe9FOZn8zMstbiJEdZOLA_OLdvFrov9YPBCEBdyRKWERIcyzAuywbxyYXfcVHqfq9p9Giec858zF6uRUQPvRq7UNj_TNwSlkcD818VnaOpGcfA7p_ZSk0tMgKNs5syzWAMO1Q9Kf0bhLep6o1vjRKTGFP6buE1EDWKq2b0g3PTcMa8RhPFznNLAUVhHJzfeR2JBulqDqWQPD1jwDrNCrAJBr7leOqOSwJ7ghbhh0hA&csuir=1&q=use+of+rigidbody+in+unity
+        // only in insaneshrey account, the link will work!
     }
 
-    
+
 }
