@@ -23,7 +23,7 @@ public class Birdscript : MonoBehaviour
     //public Dictionary<string, AudioClip> sfxs; unity editor doesn't know how to serialize this, it only supports basic types and collections.
 
     private AudioSource myAudioSource;
-    private int totalSfx = 4;
+    private int totalSfx = 6;
     
 
     // Start is called before the first frame update
@@ -61,6 +61,11 @@ public class Birdscript : MonoBehaviour
             //Debug.Log("f pressed");
 
             GameObject SpawnedBullet = Instantiate(bullet, new Vector3(0 + 1, transform.position.y ,0), transform.rotation);
+
+            SpawnedBullet.GetComponent<SpawnBullet>().ButtonHit = soundEffects[4];
+            SpawnedBullet.GetComponent<SpawnBullet>().PipeHit = soundEffects[5];
+
+            
 
             Rigidbody2D rb = SpawnedBullet.GetComponent<Rigidbody2D>();
             rb.velocity = transform.right * bulletSpeed;  
@@ -113,7 +118,7 @@ public class Birdscript : MonoBehaviour
         else if (sfx_name == "gunshot")
             myAudioSource.clip = soundEffects[3];
 
-        Debug.Log(sfx_name); 
+        //Debug.Log(sfx_name); 
 
         myAudioSource.volume = 0.6f;
         myAudioSource.Play();

@@ -70,11 +70,6 @@ public class PipeSpawnScript : MonoBehaviour
             GameObject top_btn = topPipe.transform.Find("red button").gameObject;
             top_btn.SetActive(true);
 
-            
-
-
-
-
 
             // to look into types of positions and scales later: 
 
