@@ -15,6 +15,7 @@ public class SpawnBullet : MonoBehaviour
     private BoxCollider2D bCollider;
     private SpriteRenderer sr;
 
+    private bool hasCollided = false;
     private void Start()
     {
 
@@ -44,28 +45,53 @@ public class SpawnBullet : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
+        if (hasCollided)
+        {
+            return;
+        }
+
+        Debug.Log("name of this object: " + gameObject.name);
+        Debug.Log("name of collided object: " + collision.gameObject.name);
+
         if (collision.gameObject.name == "Top Pipe" || collision.gameObject.name == "Bottom Pipe")
         {
             //play a error sound: 
             //ads.clip = bird.soundEffects[5];
             //Debug.Log("audioclip of pipe when hit = " + PipeHit);
-            
-            ads.clip = PipeHit;            
-            
-        } else if (collision.gameObject.name == "red button")
+
+            ads.clip = PipeHit;
+
+        }
+        else if (collision.gameObject.name == "red button")
         {
             // play a button hit sound: 
             //ads.clip = bird.soundEffects[4];
             //Debug.Log("audioclip of button when hit = " + ButtonHit.name);
-            
+
             ads.clip = ButtonHit;
         }
+        // Solved the Bug: when 1 bullet was close enough to another bullet, it caused NullReferenceException as ads.clip would be null;
+        // This condition solves it!
+        else if (collision.gameObject.name == gameObject.name) 
+        {
+            ads.clip = null;
+        }
 
-        ads.volume = 0.8f;
-        ads.Play();
-        StartCoroutine(WaitTillSoundFinishes(ads.clip.length, ads.clip.name));
+        hasCollided = true;
+
+        if (ads.clip != null)
+        {
+            Debug.Log("not null");
+            ads.volume = 0.8f;
+            ads.Play();
+
+            StartCoroutine(WaitTillSoundFinishes(ads.clip.length, ads.clip.name));
+        } else
+        {
+            StartCoroutine(WaitTillSoundFinishes(0.2f, gameObject.name));
+        }
         // wait for the sound to end, so we can destroy the object:
-
+        
     }
 
     //IEnumerator WaitTillSoundEnds()  
