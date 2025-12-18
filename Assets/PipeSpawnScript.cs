@@ -89,9 +89,14 @@ public class PipeSpawnScript : MonoBehaviour
             spawned++;
         }
 
-        // to look into later: coroutines
+        // To learn and look into: 
+
+        // coroutines
         // google important conversation link: https://www.google.com/search?sourceid=chrome&udm=50&aep=26&mtid=5C84afOkKo-_juMP9vygwAY&ved=0CAkQ2_wOahcKEwjwp7iTmbKRAxUAAAAAHQAAAAAQDQ&atvm=1&mstk=AUtExfAhGLoA234N1_QHrhkKFotsYVKqTooQXWQCLzEFx4-z5nfI_N_NQ-rCXYgbBQEvqJcPPH1Dg9fX_ZYT1_UGfDL8DwargxjMDXqusbwL5qW5DjMkPrCMugMHZUgDjjNi1XIUdd0WmildLNm8xuWjUvn8tMdkDUlYa2ARpJvTjyxLcfVfLb-xhWFRSe9FOZn8zMstbiJEdZOLA_OLdvFrov9YPBCEBdyRKWERIcyzAuywbxyYXfcVHqfq9p9Giec858zF6uRUQPvRq7UNj_TNwSlkcD818VnaOpGcfA7p_ZSk0tMgKNs5syzWAMO1Q9Kf0bhLep6o1vjRKTGFP6buE1EDWKq2b0g3PTcMa8RhPFznNLAUVhHJzfeR2JBulqDqWQPD1jwDrNCrAJBr7leOqOSwJ7ghbhh0hA&csuir=1&q=use+of+rigidbody+in+unity
         // only in insaneshrey account, the link will work!
+        // Particle system, conversatin link: https://www.google.com/search?sourceid=chrome&udm=50&aep=26&mtid=6x48aerfNo724-EP0_KO-AI&atvm=1&mstk=AUtExfACchIS1oBpLbH4ihcXC7di2sbh2-f2ex8t1KnJPcWwX_8uHtQ1JFiBdgxlrwiJGUmBywZ9Wp3mZh_E4fN1aFs2X4dWRfdllAGuBvaXoh7XyuJVbxqxLH3UtapPXsoOpCFoopVb6dwFjgo4E2R5Bh5RpBP28jRfuHQ3V9-g4DXWeszJBUU7l_dbnZUFEFg1X02wZb5Tr4we-15tjU5NhLTLL3KpwBZEDRy8_82jymXKmlG3iWWoCf_JfMpn4bjS_keo6o_sObFCELMMf_2Vs2_oHHnX0CqkHyM&csuir=1&q=in+unity%2C+the+material+I+created+in+which+I+used+a+sprite%2C+doesn%27t+display+the+whole+sprite+in+one+view&ved=0CAoQ2_wOahcKEwiQ0NSanbiRAxUAAAAAHQAAAAAQHg
+        // Unity New Input system
+        // How to run and deploy unity games on Android
     }
 
 

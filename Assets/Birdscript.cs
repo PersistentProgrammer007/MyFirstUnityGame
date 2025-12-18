@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR;
+using UnityEngine.InputSystem;
 
 public class Birdscript : MonoBehaviour
 {
@@ -19,15 +20,21 @@ public class Birdscript : MonoBehaviour
     public int bulletSpeed = 100;
 
     public PipeMiddleScript pms;
-    
+
     //public Dictionary<string, AudioClip> sfxs; unity editor doesn't know how to serialize this, it only supports basic types and collections.
+
+    private PlayerInput playerinput;
+
+    private InputAction jump;
+    private InputAction fire;
 
     private AudioSource myAudioSource;
     private int totalSfx = 6;
     
 
     // Start is called before the first frame update
-    void Start()
+    // but what about awake() ?
+    void Awake()
     {
 
         logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
@@ -36,43 +43,18 @@ public class Birdscript : MonoBehaviour
         myAudioSource.volume = 0.5f;
         pms.Pipe += changeNPlaySound;
 
+        playerinput = GetComponent<PlayerInput>();
+        jump = playerinput.actions["jump"];
+        fire = playerinput.actions["fire"];
+
         //Debug.Log("clip " + myAudioSource.clip);
 
         //Debug.Log("Current Scene Index: " + SceneManager.GetActiveScene().buildIndex);
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isBirdAlive)
-        {
-            myRigidBody.velocity = Vector2.up * flapStrength;
-
-            changeNPlaySound("jump");
-            
-        }
-
-        if (Input.GetKeyDown(KeyCode.F) && isBirdAlive)
-        {
-
-            changeNPlaySound("gunshot");
-
-            //Debug.Log("f pressed");
-
-            GameObject SpawnedBullet = Instantiate(bullet, new Vector3(0 + 1, transform.position.y ,0), transform.rotation);
-
-            SpawnedBullet.GetComponent<SpawnBullet>().ButtonHit = soundEffects[4];
-            SpawnedBullet.GetComponent<SpawnBullet>().PipeHit = soundEffects[5];
-
-            
-
-            Rigidbody2D rb = SpawnedBullet.GetComponent<Rigidbody2D>();
-            rb.velocity = transform.right * bulletSpeed;  
-
-        }
-
-        
 
         if ( myRigidBody.position.x <= -16 || myRigidBody.position.y <= -10 )
         {
@@ -84,6 +66,45 @@ public class Birdscript : MonoBehaviour
         }
        
     }
+
+    private void OnEnable()
+    {
+        jump.performed += Jumping;
+        fire.performed += Shooting;
+
+    }
+
+ 
+
+    private void Jumping(InputAction.CallbackContext obj)
+    {
+
+        if (isBirdAlive)
+        {
+            myRigidBody.velocity = Vector2.up * flapStrength;
+            changeNPlaySound("jump");
+        }
+
+    }
+
+    private void Shooting(InputAction.CallbackContext obj)
+    {
+        if (isBirdAlive)
+        {
+            changeNPlaySound("gunshot");
+
+
+            GameObject SpawnedBullet = Instantiate(bullet, new Vector3(0 + 1, transform.position.y ,0), transform.rotation);
+
+            SpawnedBullet.GetComponent<SpawnBullet>().ButtonHit = soundEffects[4];
+            SpawnedBullet.GetComponent<SpawnBullet>().PipeHit = soundEffects[5];
+
+            Rigidbody2D rb = SpawnedBullet.GetComponent<Rigidbody2D>();
+            rb.velocity = transform.right * bulletSpeed;  
+        }
+    }
+
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -124,6 +145,12 @@ public class Birdscript : MonoBehaviour
         myAudioSource.Play();
 
         return true;
+    }
+
+    private void OnDisable()
+    {
+        jump.performed -= Jumping;
+        fire.performed -= Shooting;
     }
 
     /*
