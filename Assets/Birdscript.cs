@@ -47,10 +47,29 @@ public class Birdscript : MonoBehaviour
         jump = playerinput.actions["jump"];
         fire = playerinput.actions["fire"];
 
+
+        if(Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            GameObject fire_btn = GameObject.FindGameObjectWithTag("bullet_ui_btn");
+            GameObject jump_btn = GameObject.FindGameObjectWithTag("jump_ui_btn");
+
+            // active/inactive refers to gameobject's state while enable/disable refers to a specific component's state !!
+
+            fire_btn.SetActive(false);
+            jump_btn.SetActive(false);
+        }
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+
+            GameObject score = GameObject.Find("user_score");
+            score.transform.position = new Vector3(score.transform.position.x, score.transform.position.y - 60, score.transform.position.z);
+        }
+
         //Debug.Log("clip " + myAudioSource.clip);
 
         //Debug.Log("Current Scene Index: " + SceneManager.GetActiveScene().buildIndex);
-        
+
     }
 
     void Update()
@@ -79,31 +98,42 @@ public class Birdscript : MonoBehaviour
     private void Jumping(InputAction.CallbackContext obj)
     {
 
+        Jump();
+
+    }
+
+    public void Jump()
+    {
         if (isBirdAlive)
         {
             myRigidBody.velocity = Vector2.up * flapStrength;
             changeNPlaySound("jump");
         }
-
     }
 
     private void Shooting(InputAction.CallbackContext obj)
     {
         if (isBirdAlive)
         {
-            changeNPlaySound("gunshot");
-
-
-            GameObject SpawnedBullet = Instantiate(bullet, new Vector3(0 + 1, transform.position.y ,0), transform.rotation);
-
-            SpawnedBullet.GetComponent<SpawnBullet>().ButtonHit = soundEffects[4];
-            SpawnedBullet.GetComponent<SpawnBullet>().PipeHit = soundEffects[5];
-
-            Rigidbody2D rb = SpawnedBullet.GetComponent<Rigidbody2D>();
-            rb.velocity = transform.right * bulletSpeed;  
+            BulletSpawn();
         }
     }
 
+   
+    public void BulletSpawn()
+    {
+        changeNPlaySound("gunshot");
+
+        GameObject SpawnedBullet = Instantiate(bullet, new Vector3(0 + 1, transform.position.y, 0), transform.rotation);
+
+        SpawnedBullet.GetComponent<SpawnBullet>().ButtonHit = soundEffects[4];
+        SpawnedBullet.GetComponent<SpawnBullet>().PipeHit = soundEffects[5];
+
+        Rigidbody2D rb = SpawnedBullet.GetComponent<Rigidbody2D>();
+        rb.velocity = transform.right * bulletSpeed;
+    }
+
+    
 
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -14,11 +14,13 @@ public class PipeSpawnScript : MonoBehaviour
     private float timer = 0;
     private int spawned = 0;
 
-    //private RButton button;
+    private float screenRightEdgeWorld;
+    private float offScreenSpawnPadding = 1.0f;
 
     // Start is called before the first frame update
     void Start()
     {
+        CalculateScreenBounds();
         spawnPipe();
     }
 
@@ -29,11 +31,12 @@ public class PipeSpawnScript : MonoBehaviour
             spawnRate = 3f;
         else
         {
-            spawnRate = 2;
+            spawnRate = 2f;
         }
 
         if (timer < spawnRate)
         {
+            // All computers, regardless of FPS they deliver, will have the same output in the game
             timer = timer + Time.deltaTime;
         }
         else
@@ -43,6 +46,14 @@ public class PipeSpawnScript : MonoBehaviour
         }
     }
 
+    void CalculateScreenBounds()
+    {
+        // Get the world point of the top-right corner of the viewport
+        // We set the Z distance to match where you typically place objects in a 2D game (often near the camera's Z position or 0)
+        Vector3 topRightWorld = Camera.main.ViewportToWorldPoint(new Vector3(1f, 1f, Camera.main.transform.position.z));
+        screenRightEdgeWorld = topRightWorld.x;
+    }
+
     void spawnPipe()
     {
         // per 3 open pipes spawned, we need 1 close pipe with a button with which our bullet will collide and when it does, the pipes will move
@@ -50,9 +61,7 @@ public class PipeSpawnScript : MonoBehaviour
 
         //What I want: the bird shoots bullet (with sound) it travels ,when it collides with red button and its associated pipe goes to top with
         // animation!
-        
-        
-      
+        float spawnXPosition = screenRightEdgeWorld + offScreenSpawnPadding;
 
         if (spawned == 3)
         {
@@ -62,7 +71,7 @@ public class PipeSpawnScript : MonoBehaviour
             float lowerPoint = -5.1f;
             float higherPoint = 4f;
 
-            GameObject parent = Instantiate(ClosedPipe, new Vector3(transform.position.x, Random.Range(lowerPoint, higherPoint) ,0), transform.rotation);
+            GameObject parent = Instantiate(ClosedPipe, new Vector3(spawnXPosition, Random.Range(lowerPoint, higherPoint) ,0), transform.rotation);
 
             Transform topPipe = parent.transform.Find("Top Pipe");       //randomly, this is the pipe with the red button:
             Transform bottomPipe = parent.transform.Find("Bottom Pipe"); // so this pipe has to have a scale effect, it could be also vice-versa
@@ -70,22 +79,13 @@ public class PipeSpawnScript : MonoBehaviour
             GameObject top_btn = topPipe.transform.Find("red button").gameObject;
             top_btn.SetActive(true);
 
-
-            // to look into types of positions and scales later: 
-
-            //Debug.Log("Hello child_name = " + topPipe.name + " world Y position = " + topPipe.position.y);
-            //Debug.Log("Hello child_name = " + topPipe.name + " local Y position = " + topPipe.localPosition.y);
-
-            //Debug.Log("bottom pipe local scale: " + bottomPipe.localScale);
-            //Debug.Log("bottom pipe lossy scale: " + bottomPipe.lossyScale);
-
         }
         else
         {
             float lowerPoint = transform.position.y - heightOffset;     // y = -.13
             float highestPoint = transform.position.y + heightOffset;    // range we want: -5.49 ~ 4.77 so default heightoffset = 4.75!
 
-            GameObject parent = Instantiate(Pipe, new Vector3(transform.position.x, Random.Range(lowerPoint, highestPoint), 0), transform.rotation);
+            GameObject parent = Instantiate(Pipe, new Vector3(spawnXPosition, Random.Range(lowerPoint, highestPoint), 0), transform.rotation);
             spawned++;
         }
 
@@ -98,6 +98,14 @@ public class PipeSpawnScript : MonoBehaviour
         // Unity New Input system
         // How to run and deploy unity games on Android
     }
+
+    // to look into types of positions and scales later: 
+
+    //Debug.Log("Hello child_name = " + topPipe.name + " world Y position = " + topPipe.position.y);
+    //Debug.Log("Hello child_name = " + topPipe.name + " local Y position = " + topPipe.localPosition.y);
+
+    //Debug.Log("bottom pipe local scale: " + bottomPipe.localScale);
+    //Debug.Log("bottom pipe lossy scale: " + bottomPipe.lossyScale);
 
 
 }
